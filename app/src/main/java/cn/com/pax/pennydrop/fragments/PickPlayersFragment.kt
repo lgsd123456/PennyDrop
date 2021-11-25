@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import cn.com.pax.pennydrop.R
 import cn.com.pax.pennydrop.databinding.FragmentPickPlayersBinding
+import cn.com.pax.pennydrop.viewmoodels.GameViewModel
 import cn.com.pax.pennydrop.viewmoodels.PickPlayersViewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,6 +28,7 @@ class PickPlayersFragment : Fragment() {
     private var param2: String? = null
 
     private val pickPlayersViewModel by activityViewModels<PickPlayersViewModel>()
+    private val gameViewModel by activityViewModels<GameViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +45,15 @@ class PickPlayersFragment : Fragment() {
         // Inflate the layout for this fragment
         val binding = FragmentPickPlayersBinding.inflate(inflater, container, false).apply {
             this.vm = pickPlayersViewModel
+            this.buttonPlayGame.setOnClickListener {
+                gameViewModel.startGame(
+                    pickPlayersViewModel.players.value
+                        ?.filter { newPlayer ->  newPlayer.isIncluded.get()}
+                        ?.map { newPlayer -> newPlayer.toPlayer() }
+                        ?: emptyList()
+                )
+                findNavController().navigate(R.id.gameFragment)
+            }
         }
         return binding.root
     }

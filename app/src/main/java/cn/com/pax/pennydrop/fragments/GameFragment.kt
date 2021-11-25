@@ -6,8 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import cn.com.pax.pennydrop.R
 import cn.com.pax.pennydrop.databinding.FragmentGameBinding
+import cn.com.pax.pennydrop.types.Player
+import cn.com.pax.pennydrop.types.Slot
+import cn.com.pax.pennydrop.viewmoodels.GameViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +28,7 @@ class GameFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private val gameViewModel by activityViewModels<GameViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +44,9 @@ class GameFragment : Fragment() {
     ): View? {
         val binding = FragmentGameBinding.inflate(inflater, container, false)
         binding.apply {
+            this.vm = gameViewModel
             textCurrentTurnInfo.movementMethod = ScrollingMovementMethod()
+            lifecycleOwner = viewLifecycleOwner
         }
         return binding.root
     }

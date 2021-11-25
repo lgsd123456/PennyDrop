@@ -16,4 +16,14 @@ class NewPlayer(
     } else {
         null
     }
+
+    fun toPlayer() = Player(
+        if(this.isHuman.get()) {
+            this.playerName
+        } else {
+            (this.selectedAI()?.name ?: "AI")
+        },
+        this.isHuman.get(),
+        this.selectedAI()
+    )
 }
